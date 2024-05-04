@@ -1,6 +1,8 @@
 package moais.todolist.web;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,11 +40,18 @@ public class TodoController {
 
     @Operation(summary = "회원 TODO 리스트 조회", description = "회원이 작성한 TODO 리스트를 조회합니다.")
     @ApiResponse(responseCode = "200", description = "성공", useReturnTypeSchema = true)
+    @Parameters({
+            @Parameter(name = "page", description = "시작 페이지 번호", example = "0"),
+            @Parameter(name = "size", description = "조회할 사이즈", example = "5")
+    })
     @GetMapping("/todo/list")
     @ResponseBody
     public ApiCommonResponse<List<TodoResponse>> findTodoList(
-            @AuthenticationPrincipal LoginAccount loginAccount, @RequestBody PagingRequest pagingRequest) {
-        return ApiCommonResponse.ok(todoService.findTodoByAccount(loginAccount.getAccount(), pagingRequest));
+            @AuthenticationPrincipal LoginAccount loginAccount,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size) {
+        return ApiCommonResponse.ok(
+                todoService.findTodoByAccount(loginAccount.getAccount(), PagingRequest.of(page, size)));
     }
 
     @Operation(summary = "회원의 가장 최근 TODO 조회", description = "회원이 작성한 가장 최근 TODO를 조회합니다.")
