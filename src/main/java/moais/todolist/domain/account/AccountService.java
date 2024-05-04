@@ -31,6 +31,7 @@ public class AccountService implements UserDetailsService {
     public Long createNew(AccountRequest accountRequest) {
         return accountRepository.save(accountRequest.toEntity(passwordEncoder)).getId();
     }
+    
 }
 
 

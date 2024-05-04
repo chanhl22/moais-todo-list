@@ -1,23 +1,29 @@
 package moais.todolist.web;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import moais.todolist.domain.account.AccountService;
 import moais.todolist.domain.account.dto.AccountRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+@Tag(name = "회원", description = "회원 API")
 @RequiredArgsConstructor
 @Controller
 public class AccountController {
 
     private final AccountService accountService;
 
-    @GetMapping("/account/{username}/{password}/{role}")
+    @Operation(summary = "회원가입", description = "회원에 가입합니다.")
+    @ApiResponse(responseCode = "200", description = "성공", useReturnTypeSchema = true)
+    @PostMapping("/account/save")
     @ResponseBody
-    public Long createAccount(@PathVariable String username, @PathVariable String password, @PathVariable String role) {
-        return accountService.createNew(AccountRequest.of(username, password, role));
+    public Long createAccount(@RequestBody AccountRequest addRequest) {
+        return accountService.createNew(addRequest);
     }
 
 }
