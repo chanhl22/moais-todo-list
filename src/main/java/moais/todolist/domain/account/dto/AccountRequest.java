@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Getter
 public class AccountRequest {
 
+    private static final String ROLE = "USER";
+
     @Schema(description = "회원 닉네임", example = "hello")
     private final String username;
 
@@ -26,7 +28,7 @@ public class AccountRequest {
         return Account.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
-                .role("USER")
+                .role(ROLE)
                 .build();
     }
 

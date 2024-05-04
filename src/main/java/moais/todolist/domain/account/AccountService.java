@@ -3,6 +3,7 @@ package moais.todolist.domain.account;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moais.todolist.domain.account.dto.AccountRequest;
+import moais.todolist.domain.exception.TodoException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,7 +30,16 @@ public class AccountService implements UserDetailsService {
 
     @Transactional
     public Long createNew(AccountRequest accountRequest) {
+        isExistUsername(accountRequest);
+
         return accountRepository.save(accountRequest.toEntity(passwordEncoder)).getId();
+    }
+
+    private void isExistUsername(AccountRequest accountRequest) {
+        accountRepository.findByUsername(accountRequest.getUsername())
+                .ifPresent(account -> {
+                    throw new TodoException("이미 등록된 닉네임입니다.");
+                });
     }
 
     @Transactional
