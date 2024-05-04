@@ -2,6 +2,7 @@ package moais.todolist.domain.todo;
 
 import moais.todolist.domain.account.Account;
 import moais.todolist.domain.account.AccountRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,12 @@ class TodoRepositoryTest {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @AfterEach
+    void tearDown() {
+        todoRepository.deleteAllInBatch();
+        accountRepository.deleteAllInBatch();
+    }
 
     @DisplayName("회원의 todo 리스트를 조회한다.")
     @Test
