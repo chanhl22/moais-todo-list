@@ -92,6 +92,32 @@ class TodoServiceTest {
                 );
     }
 
+    @DisplayName("회원이 작성한 가장 최근의 todo를 조회한다.")
+    @Test
+    void findTop1ByAccount() {
+        //given
+        Account account = Account.builder()
+                .username("hello")
+                .password("123")
+                .role("USER")
+                .build();
+        accountRepository.save(account);
+
+        Todo todo1 = createTodo("hello1", account);
+        Todo todo2 = createTodo("hello2", account);
+        Todo todo3 = createTodo("hello3", account);
+        Todo todo4 = createTodo("hello4", account);
+        todoRepository.saveAll(List.of(todo1, todo2, todo3, todo4));
+
+        //when
+        TodoResponse result = todoService.findTop1ByAccount(account);
+
+        //then
+        assertThat(result)
+                .extracting("content", "username")
+                .containsExactly("hello4", "hello");
+    }
+
     private Todo createTodo(String hello1, Account account) {
         return Todo.builder()
                 .content(hello1)

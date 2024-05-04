@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,7 +33,7 @@ class TodoRepositoryTest {
 
     @DisplayName("회원의 todo 리스트를 조회한다.")
     @Test
-    void findAll() {
+    void findByAccount() {
         //given
         Account account = Account.builder()
                 .username("hello")
@@ -56,6 +57,31 @@ class TodoRepositoryTest {
         assertThat(todos).hasSize(3)
                 .extracting("content")
                 .containsExactly("hello4", "hello3", "hello2");
+    }
+
+    @DisplayName("회원의 가장 최근의 todo를 조회한다.")
+    @Test
+    void findTop1ByAccount() {
+        //given
+        Account account = Account.builder()
+                .username("hello")
+                .password("123")
+                .role("USER")
+                .build();
+        accountRepository.save(account);
+
+        Todo todo1 = createTodo("hello1", account);
+        Todo todo2 = createTodo("hello2", account);
+        Todo todo3 = createTodo("hello3", account);
+        Todo todo4 = createTodo("hello4", account);
+        todoRepository.saveAll(List.of(todo1, todo2, todo3, todo4));
+
+        //when
+        Optional<Todo> todo = todoRepository.findTop1ByAccountOrderByCreatedDateTimeDesc(account);
+
+        //then
+        assertThat(todo.get().getContent()).isEqualTo("hello4");
+        assertThat(todo.get().getAccount().getUsername()).isEqualTo("hello");
     }
 
     private Todo createTodo(String hello1, Account account) {
