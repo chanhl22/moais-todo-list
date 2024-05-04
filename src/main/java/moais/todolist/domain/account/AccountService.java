@@ -9,9 +9,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class AccountService implements UserDetailsService {
 
@@ -30,6 +32,7 @@ public class AccountService implements UserDetailsService {
                 .build();
     }
 
+    @Transactional
     public Long createNew(AccountRequest accountRequest) {
         return accountRepository.save(accountRequest.toEntity(passwordEncoder)).getId();
     }
