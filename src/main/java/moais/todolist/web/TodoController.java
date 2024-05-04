@@ -34,4 +34,11 @@ public class TodoController {
         return ApiCommonResponse.ok(todoService.findTodoByAccount(loginAccount.getAccount(), pagingRequest));
     }
 
+    @GetMapping("/todo/latest")
+    @ResponseBody
+    public ApiCommonResponse<TodoResponse> findTodoLatest(
+            @AuthenticationPrincipal LoginAccount loginAccount) {
+        return ApiCommonResponse.ok(todoService.findTop1ByAccount(loginAccount.getAccount()));
+    }
+
 }

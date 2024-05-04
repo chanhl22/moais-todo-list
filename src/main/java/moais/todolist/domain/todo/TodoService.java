@@ -31,6 +31,12 @@ public class TodoService {
                 .collect(Collectors.toList());
     }
 
+    public TodoResponse findTop1ByAccount(Account account) {
+        return todoRepository.findTop1ByAccountOrderByCreatedDateTimeDesc(account)
+                .map(TodoResponse::of)
+                .orElseGet(TodoResponse::empty);
+    }
+
 }
 
 

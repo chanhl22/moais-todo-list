@@ -35,4 +35,9 @@ public class TodoResponse {
                 .build();
     }
 
+    public static TodoResponse empty() {
+        return TodoResponse.builder()
+                .build();
+    }
+
 }
