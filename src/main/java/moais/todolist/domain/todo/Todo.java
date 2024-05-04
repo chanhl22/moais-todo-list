@@ -35,4 +35,9 @@ public class Todo extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Account account;
 
+    public void update(String content, TodoStatus status) {
+        this.content = content;
+        this.status = status;
+    }
+
 }

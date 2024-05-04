@@ -16,4 +16,6 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     @EntityGraph(attributePaths = {"account"})
     Optional<Todo> findTop1ByAccountOrderByCreatedDateTimeDesc(Account account);
 
+    Optional<Todo> findByAccountAndId(Account account, Long id);
+
 }

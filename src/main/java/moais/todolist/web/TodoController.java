@@ -7,8 +7,10 @@ import moais.todolist.domain.todo.TodoService;
 import moais.todolist.domain.todo.dto.TodoAddRequest;
 import moais.todolist.domain.todo.dto.TodoResponse;
 import moais.todolist.domain.account.LoginAccount;
+import moais.todolist.domain.todo.dto.TodoUpdateRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +23,7 @@ public class TodoController {
 
     private final TodoService todoService;
 
-    @GetMapping("/todo/save")
+    @PostMapping("/todo/save")
     public ApiCommonResponse<Long> saveTodo(
             @AuthenticationPrincipal LoginAccount loginAccount, @RequestBody TodoAddRequest addRequest) {
         return ApiCommonResponse.ok(todoService.save(loginAccount.getAccount(), addRequest));
@@ -39,6 +41,13 @@ public class TodoController {
     public ApiCommonResponse<TodoResponse> findTodoLatest(
             @AuthenticationPrincipal LoginAccount loginAccount) {
         return ApiCommonResponse.ok(todoService.findTop1ByAccount(loginAccount.getAccount()));
+    }
+
+    @PostMapping("/todo/update")
+    @ResponseBody
+    public ApiCommonResponse<Long> update(
+            @AuthenticationPrincipal LoginAccount loginAccount, @RequestBody TodoUpdateRequest updateRequest) {
+        return ApiCommonResponse.ok(todoService.update(loginAccount.getAccount(), updateRequest));
     }
 
 }
