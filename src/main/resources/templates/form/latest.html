@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>todo 리스트 화면</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<div id="wrap">
+
+    <h1>todo 최근</h1>
+    <div>
+        <table border='1'>
+            <colgroup>
+                <col width="240px">
+                <col width="120px">
+                <col width="120px">
+                <col width="120px">
+                <col width="*">
+            </colgroup>
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">내용</th>
+                <th scope="col">상태</th>
+                <th scope="col">작성자</th>
+                <th scope="col">등록시간</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ id }}</td>
+                <td>{{ content }}</td>
+                <td>{{ status }}</td>
+                <td>{{ username }}</td>
+                <td>{{ createdDateTime }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script th:src="@{/js/lastest.js}"></script>
+
+</body>
+</html>

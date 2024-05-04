@@ -24,7 +24,7 @@ public class AccountController {
 
     @Operation(summary = "회원가입", description = "회원에 가입합니다.")
     @ApiResponse(responseCode = "200", description = "성공", useReturnTypeSchema = true)
-    @PostMapping("/account/save")
+    @PostMapping("/account/signup")
     @ResponseBody
     public ApiCommonResponse<Long> createAccount(@RequestBody AccountRequest addRequest) {
         return ApiCommonResponse.ok(accountService.createNew(addRequest));

@@ -16,29 +16,17 @@ public class AccountRequest {
     @Schema(description = "비밀번호", example = "123")
     private final String password;
 
-    @Schema(description = "권한", example = "USER")
-    private final String role;
-
     @Builder
-    private AccountRequest(String username, String password, String role) {
+    private AccountRequest(String username, String password) {
         this.username = username;
         this.password = password;
-        this.role = role;
-    }
-
-    public static AccountRequest of(String username, String password, String role) {
-        return AccountRequest.builder()
-                .username(username)
-                .password(password)
-                .role(role)
-                .build();
     }
 
     public Account toEntity(PasswordEncoder passwordEncoder) {
         return Account.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
-                .role(role)
+                .role("USER")
                 .build();
     }
 

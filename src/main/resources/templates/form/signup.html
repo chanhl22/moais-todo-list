@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<div id="wrap">
+
+    <h1>회원가입</h1>
+    <p>Username: <input type="text" name="username" v-model="username"></p>
+    <p>Password: <input type="password" name="password" v-model="password"></p>
+    <button @click="signup()">등록</button>
+
+</div>
+
+<script th:src="@{/js/signup.js}"></script>
+
+</body>
+</html>

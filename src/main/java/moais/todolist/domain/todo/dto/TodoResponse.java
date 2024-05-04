@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 @Getter
 public class TodoResponse {
 
+    @Schema(description = "TODO id", example = "TODO id")
+    private final Long id;
+
     @Schema(description = "TODO 내용", example = "리스트 개발")
     private final String content;
 
@@ -25,7 +28,8 @@ public class TodoResponse {
     private final LocalDateTime createdDateTime;
 
     @Builder
-    private TodoResponse(String content, TodoStatus status, String username, LocalDateTime createdDateTime) {
+    private TodoResponse(Long id, String content, TodoStatus status, String username, LocalDateTime createdDateTime) {
+        this.id = id;
         this.content = content;
         this.status = status;
         this.username = username;
@@ -34,6 +38,7 @@ public class TodoResponse {
 
     public static TodoResponse of(Todo todo) {
         return TodoResponse.builder()
+                .id(todo.getId())
                 .content(todo.getContent())
                 .status(todo.getStatus())
                 .username(todo.getAccount().getUsername())

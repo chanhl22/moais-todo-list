@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>등록</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<div id="wrap">
+
+    <h1>등록</h1>
+    <p>content: <input type="text" name="content" v-model="content"></p>
+    <p>status: <input type="text" name="status" v-model="status"></p>
+    <button @click="save()">등록</button>
+
+</div>
+
+<script th:src="@{/js/save.js}"></script>
+
+</body>
+</html>
