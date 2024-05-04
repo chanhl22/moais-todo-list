@@ -40,4 +40,29 @@ class AccountServiceTest {
         assertThat(createdAccountId).isNotNull();
     }
 
+    @DisplayName("중복된 닉네임으로 회원가입을 할 수 없다.")
+    @Test
+    void duplicationUsername() {
+
+    }
+
+    @DisplayName("회원탈퇴를 한다.")
+    @Test
+    void delete() {
+        //given
+        Account account = Account
+                .builder()
+                .username("hello")
+                .password("123")
+                .role("USER")
+                .build();
+        Account savedAccount = accountRepository.save(account);
+
+        //when
+        accountService.delete(savedAccount);
+
+        //then
+        assertThat(accountRepository.findById(savedAccount.getId())).isEmpty();
+    }
+
 }
