@@ -5,6 +5,7 @@ import moais.todolist.domain.account.AccountRepository;
 import moais.todolist.domain.paging.PagingRequest;
 import moais.todolist.domain.todo.dto.TodoAddRequest;
 import moais.todolist.domain.todo.dto.TodoResponse;
+import moais.todolist.domain.todo.dto.TodoUpdateRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+import static moais.todolist.domain.todo.TodoStatus.PROGRESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
 
@@ -116,6 +118,35 @@ class TodoServiceTest {
         assertThat(result)
                 .extracting("content", "username")
                 .containsExactly("hello4", "hello");
+    }
+
+    @DisplayName("회원이 작성한 todo의 내용과 상태를 수정한다.")
+    @Test
+    void update() {
+        //given
+        Account account = Account.builder()
+                .username("hello")
+                .password("123")
+                .role("USER")
+                .build();
+        accountRepository.save(account);
+
+        Todo todo = createTodo("hello1", account);
+        Long id = todoRepository.save(todo).getId();
+
+        TodoUpdateRequest request = TodoUpdateRequest.builder()
+                .id(id)
+                .content("hi")
+                .status(PROGRESS)
+                .build();
+
+        //when
+        Long result = todoService.update(account, request);
+
+        //then
+        assertThat(todoRepository.findById(result).get())
+                .extracting("content", "status")
+                .containsExactly("hi", PROGRESS);
     }
 
     private Todo createTodo(String hello1, Account account) {

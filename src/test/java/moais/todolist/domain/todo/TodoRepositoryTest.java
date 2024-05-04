@@ -42,11 +42,11 @@ class TodoRepositoryTest {
                 .build();
         accountRepository.save(account);
 
-        Todo todo1 = createTodo("hello1", account);
-        Todo todo2 = createTodo("hello2", account);
-        Todo todo3 = createTodo("hello3", account);
-        Todo todo4 = createTodo("hello4", account);
-        todoRepository.saveAll(List.of(todo1, todo2, todo3, todo4));
+        createTodo("hello1", account);
+        createTodo("hello2", account);
+        createTodo("hello3", account);
+        createTodo("hello4", account);
+
 
         PageRequest pageable = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "createdDateTime"));
 
@@ -70,11 +70,10 @@ class TodoRepositoryTest {
                 .build();
         accountRepository.save(account);
 
-        Todo todo1 = createTodo("hello1", account);
-        Todo todo2 = createTodo("hello2", account);
-        Todo todo3 = createTodo("hello3", account);
-        Todo todo4 = createTodo("hello4", account);
-        todoRepository.saveAll(List.of(todo1, todo2, todo3, todo4));
+        createTodo("hello1", account);
+        createTodo("hello2", account);
+        createTodo("hello3", account);
+        createTodo("hello4", account);
 
         //when
         Optional<Todo> todo = todoRepository.findTop1ByAccountOrderByCreatedDateTimeDesc(account);
@@ -84,12 +83,33 @@ class TodoRepositoryTest {
         assertThat(todo.get().getAccount().getUsername()).isEqualTo("hello");
     }
 
+    @DisplayName("회원이 수정하기 위한 todo를 조회한다.")
+    @Test
+    void findByAccountAndId() {
+        //given
+        Account account = Account.builder()
+                .username("hello")
+                .password("123")
+                .role("USER")
+                .build();
+        accountRepository.save(account);
+
+        Todo todo = createTodo("hello1", account);
+
+        //when
+        Optional<Todo> result = todoRepository.findByAccountAndId(account, todo.getId());
+
+        //then
+        assertThat(result.get().getContent()).isEqualTo("hello1");
+    }
+
     private Todo createTodo(String hello1, Account account) {
-        return Todo.builder()
+        Todo todo = Todo.builder()
                 .content(hello1)
                 .status(TodoStatus.TODO)
                 .account(account)
                 .build();
+        return todoRepository.save(todo);
     }
 
 }
