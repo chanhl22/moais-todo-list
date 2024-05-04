@@ -1,18 +1,23 @@
 package moais.todolist.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 import static org.springframework.http.HttpStatus.OK;
 
+@Schema(description = "응답 공통 규격")
 @Getter
 public class ApiCommonResponse<T> {
 
+    @Schema(description = "상태 코드", allowableValues = {"200", "400", "500"})
     private final int code;
 
+    @Schema(description = "응답 메시지", example = "OK")
     private final String message;
 
+    @Schema(description = "응답 정보")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private final T data;
 
