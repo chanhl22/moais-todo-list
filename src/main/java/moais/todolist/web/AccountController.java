@@ -4,9 +4,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import moais.todolist.domain.ApiCommonResponse;
 import moais.todolist.domain.account.AccountService;
+import moais.todolist.domain.account.LoginAccount;
 import moais.todolist.domain.account.dto.AccountRequest;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,8 +26,17 @@ public class AccountController {
     @ApiResponse(responseCode = "200", description = "성공", useReturnTypeSchema = true)
     @PostMapping("/account/save")
     @ResponseBody
-    public Long createAccount(@RequestBody AccountRequest addRequest) {
-        return accountService.createNew(addRequest);
+    public ApiCommonResponse<Long> createAccount(@RequestBody AccountRequest addRequest) {
+        return ApiCommonResponse.ok(accountService.createNew(addRequest));
+    }
+
+    @Operation(summary = "회원탈퇴", description = "회원에서 탈퇴합니다.")
+    @ApiResponse(responseCode = "200", description = "성공", useReturnTypeSchema = true)
+    @DeleteMapping("/account/delete")
+    @ResponseBody
+    public ApiCommonResponse<Object> deleteAccount(@AuthenticationPrincipal LoginAccount loginAccount) {
+        accountService.delete(loginAccount.getAccount());
+        return ApiCommonResponse.ok();
     }
 
 }

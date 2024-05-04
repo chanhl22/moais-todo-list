@@ -31,7 +31,11 @@ public class AccountService implements UserDetailsService {
     public Long createNew(AccountRequest accountRequest) {
         return accountRepository.save(accountRequest.toEntity(passwordEncoder)).getId();
     }
-    
+
+    @Transactional
+    public void delete(Account account) {
+        accountRepository.deleteById(account.getId());
+    }
 }
 
 

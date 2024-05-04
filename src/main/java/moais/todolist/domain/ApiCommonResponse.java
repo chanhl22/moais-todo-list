@@ -35,4 +35,8 @@ public class ApiCommonResponse<T> {
         return of(OK, OK.name(), data);
     }
 
+    public static <T> ApiCommonResponse<T> ok() {
+        return of(OK, OK.name(), null);
+    }
+
 }
