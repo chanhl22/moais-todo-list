@@ -22,7 +22,6 @@ public class SecurityConfiguration {
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .mvcMatchers("/", "/account/**").permitAll()
                         .anyRequest().authenticated()
                 )
