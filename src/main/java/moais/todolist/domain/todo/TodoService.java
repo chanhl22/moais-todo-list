@@ -2,16 +2,10 @@ package moais.todolist.domain.todo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import moais.todolist.domain.account.Account;
-import moais.todolist.domain.account.AccountRepository;
-import moais.todolist.domain.account.dto.AccountRequest;
+import moais.todolist.domain.account.LoginAccount;
+import moais.todolist.domain.paging.PagingRequest;
 import moais.todolist.domain.todo.dto.TodoAddRequest;
 import moais.todolist.domain.todo.dto.TodoResponse;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,16 +19,14 @@ import java.util.stream.Collectors;
 public class TodoService {
 
     private final TodoRepository todoRepository;
-    private final AccountRepository accountRepository;
 
     @Transactional
-    public Long save(String username, TodoAddRequest addRequest) {
-        Account account = accountRepository.findByUsername(username).orElseThrow(IllegalArgumentException::new);
-        return todoRepository.save(addRequest.toEntity(account)).getId();
+    public Long save(LoginAccount loginAccount, TodoAddRequest addRequest) {
+        return todoRepository.save(addRequest.toEntity(loginAccount.getAccount())).getId();
     }
 
-    public List<TodoResponse> findAll() {
-        return todoRepository.findAll().stream()
+    public List<TodoResponse> findAll(LoginAccount loginAccount, PagingRequest pagingRequest) {
+        return todoRepository.findByAccount(loginAccount.getAccount(), pagingRequest.makePageable()).stream()
                 .map(TodoResponse::of)
                 .collect(Collectors.toList());
     }

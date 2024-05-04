@@ -5,6 +5,8 @@ import lombok.Getter;
 import moais.todolist.domain.todo.Todo;
 import moais.todolist.domain.todo.TodoStatus;
 
+import java.time.LocalDateTime;
+
 @Getter
 public class TodoResponse {
 
@@ -14,11 +16,14 @@ public class TodoResponse {
 
     private final String username;
 
+    private final LocalDateTime createdDateTime;
+
     @Builder
-    private TodoResponse(String content, TodoStatus status, String username) {
+    private TodoResponse(String content, TodoStatus status, String username, LocalDateTime createdDateTime) {
         this.content = content;
         this.status = status;
         this.username = username;
+        this.createdDateTime = createdDateTime;
     }
 
     public static TodoResponse of(Todo todo) {
@@ -26,6 +31,7 @@ public class TodoResponse {
                 .content(todo.getContent())
                 .status(todo.getStatus())
                 .username(todo.getAccount().getUsername())
+                .createdDateTime(todo.getCreatedDateTime())
                 .build();
     }
 
