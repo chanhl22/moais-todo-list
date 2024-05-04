@@ -1,6 +1,7 @@
 package moais.todolist.domain.account;
 
 import moais.todolist.domain.account.dto.AccountRequest;
+import moais.todolist.domain.exception.TodoException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class AccountServiceTest {
@@ -30,7 +32,6 @@ class AccountServiceTest {
         AccountRequest request = AccountRequest.builder()
                 .username("hello")
                 .password("123")
-                .role("ADMIN")
                 .build();
 
         //when
@@ -40,10 +41,26 @@ class AccountServiceTest {
         assertThat(createdAccountId).isNotNull();
     }
 
-    @DisplayName("중복된 닉네임으로 회원가입을 할 수 없다.")
+    @DisplayName("중복된 이름으로 회원가입을 하는 경우 예외가 발생한다.")
     @Test
-    void duplicationUsername() {
+    void isExistUsername() {
+        //given
+        Account account = Account.builder()
+                .username("hello")
+                .password("123")
+                .role("USER")
+                .build();
+        accountRepository.save(account);
 
+        AccountRequest request = AccountRequest.builder()
+                .username("hello")
+                .password("123")
+                .build();
+
+        //when //then
+        assertThatThrownBy(() -> accountService.createNew(request))
+                .isInstanceOf(TodoException.class)
+                .hasMessage("이미 등록된 닉네임입니다.");
     }
 
     @DisplayName("회원탈퇴를 한다.")
