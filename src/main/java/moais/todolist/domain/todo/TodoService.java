@@ -2,7 +2,7 @@ package moais.todolist.domain.todo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import moais.todolist.domain.account.LoginAccount;
+import moais.todolist.domain.account.Account;
 import moais.todolist.domain.paging.PagingRequest;
 import moais.todolist.domain.todo.dto.TodoAddRequest;
 import moais.todolist.domain.todo.dto.TodoResponse;
@@ -21,12 +21,12 @@ public class TodoService {
     private final TodoRepository todoRepository;
 
     @Transactional
-    public Long save(LoginAccount loginAccount, TodoAddRequest addRequest) {
-        return todoRepository.save(addRequest.toEntity(loginAccount.getAccount())).getId();
+    public Long save(Account account, TodoAddRequest addRequest) {
+        return todoRepository.save(addRequest.toEntity(account)).getId();
     }
 
-    public List<TodoResponse> findAll(LoginAccount loginAccount, PagingRequest pagingRequest) {
-        return todoRepository.findByAccount(loginAccount.getAccount(), pagingRequest.makePageable()).stream()
+    public List<TodoResponse> findTodoByAccount(Account account, PagingRequest pagingRequest) {
+        return todoRepository.findByAccount(account, pagingRequest.makePageable()).stream()
                 .map(TodoResponse::of)
                 .collect(Collectors.toList());
     }

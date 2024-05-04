@@ -24,14 +24,14 @@ public class TodoController {
     @GetMapping("/todo/save")
     public ApiCommonResponse<Long> saveTodo(
             @AuthenticationPrincipal LoginAccount loginAccount, @RequestBody TodoAddRequest addRequest) {
-        return ApiCommonResponse.ok(todoService.save(loginAccount, addRequest));
+        return ApiCommonResponse.ok(todoService.save(loginAccount.getAccount(), addRequest));
     }
 
     @GetMapping("/todo/list")
     @ResponseBody
     public ApiCommonResponse<List<TodoResponse>> findTodoList(
             @AuthenticationPrincipal LoginAccount loginAccount, @RequestBody PagingRequest pagingRequest) {
-        return ApiCommonResponse.ok(todoService.findAll(loginAccount, pagingRequest));
+        return ApiCommonResponse.ok(todoService.findTodoByAccount(loginAccount.getAccount(), pagingRequest));
     }
 
 }
