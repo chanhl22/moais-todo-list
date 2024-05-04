@@ -19,5 +19,9 @@ new Vue({
                 });
         },
 
+        update: function (id, content, status) {
+            window.location.href = '/update?id=' + id + '&content=' + content + '&status=' + status;
+        }
+
     }
 })

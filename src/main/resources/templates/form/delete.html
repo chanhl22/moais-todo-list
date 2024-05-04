@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원탈퇴</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<div id="wrap">
+
+    <h1>회원탈퇴</h1>
+    <h3>탈퇴하면 복구할 수 없습니다.</h3>
+    <button @click="bye()">탈퇴</button>
+
+</div>
+
+<script th:src="@{/js/delete.js}"></script>
+
+</body>
+</html>

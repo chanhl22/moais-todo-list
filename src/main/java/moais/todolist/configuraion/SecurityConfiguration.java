@@ -31,6 +31,9 @@ public class SecurityConfiguration {
                 .defaultSuccessUrl("/list")
                 .permitAll()
                 .and()
+                .logout()
+                .logoutSuccessUrl("/")
+                .and()
                 .httpBasic(withDefaults());
 
         return http.build();

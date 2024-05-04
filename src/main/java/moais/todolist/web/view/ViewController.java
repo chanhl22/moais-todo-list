@@ -36,4 +36,14 @@ public class ViewController {
         return "form/latest";
     }
 
+    @GetMapping("/update")
+    public String updateForm() {
+        return "form/update";
+    }
+
+    @GetMapping("/delete")
+    public String deleteForm() {
+        return "form/delete";
+    }
+
 }
