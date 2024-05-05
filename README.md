@@ -78,4 +78,3 @@ TodoService는 TodoRepository와 StatusPolicy를 의존하고 있습니다.
 8. 페치 조인, 벌크성 쿼리로 DB 통신 최소화 
 9. 요청 데이터 null, "", " " 모두 검증
 10. 공통 응답 규격 및 예외 응답 처리
-11. swagger 적용
