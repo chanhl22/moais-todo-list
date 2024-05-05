@@ -27,6 +27,7 @@ public class AccountRequest {
     public Account toEntity(PasswordEncoder passwordEncoder) {
         return Account.builder()
                 .username(username)
+                .nickname(username)
                 .password(passwordEncoder.encode(password))
                 .role(ROLE)
                 .build();

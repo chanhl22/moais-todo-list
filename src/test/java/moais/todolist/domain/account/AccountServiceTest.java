@@ -67,7 +67,7 @@ class AccountServiceTest {
         //when //then
         assertThatThrownBy(() -> accountService.createNew(request))
                 .isInstanceOf(TodoException.class)
-                .hasMessage("이미 등록된 닉네임입니다.");
+                .hasMessage("이미 등록된 회원입니다.");
     }
 
     @DisplayName("회원탈퇴를 한다.")

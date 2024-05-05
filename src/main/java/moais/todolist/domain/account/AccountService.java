@@ -40,7 +40,7 @@ public class AccountService implements UserDetailsService {
     private void isExistUsername(AccountRequest accountRequest) {
         accountRepository.findByUsername(accountRequest.getUsername())
                 .ifPresent(account -> {
-                    throw new TodoException("이미 등록된 닉네임입니다.");
+                    throw new TodoException("이미 등록된 회원입니다.");
                 });
     }
 

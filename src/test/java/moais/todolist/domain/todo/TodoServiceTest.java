@@ -65,6 +65,7 @@ class TodoServiceTest {
         //given
         Account account = Account.builder()
                 .username("hello")
+                .nickname("hello")
                 .password("123")
                 .role("USER")
                 .build();
@@ -86,7 +87,7 @@ class TodoServiceTest {
 
         //then
         assertThat(result).hasSize(3)
-                .extracting("content", "username")
+                .extracting("content", "nickname")
                 .containsExactly(
                         tuple("hello4", "hello"),
                         tuple("hello3", "hello"),
@@ -100,6 +101,7 @@ class TodoServiceTest {
         //given
         Account account = Account.builder()
                 .username("hello")
+                .nickname("hello")
                 .password("123")
                 .role("USER")
                 .build();
@@ -116,7 +118,7 @@ class TodoServiceTest {
 
         //then
         assertThat(result)
-                .extracting("content", "username")
+                .extracting("content", "nickname")
                 .containsExactly("hello4", "hello");
     }
 

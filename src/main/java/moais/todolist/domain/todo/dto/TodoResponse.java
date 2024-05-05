@@ -21,18 +21,18 @@ public class TodoResponse {
     @Schema(description = "TODO 상태")
     private final TodoStatus status;
 
-    @Schema(description = "작성한 회원", example = "hello")
-    private final String username;
+    @Schema(description = "작성한 회원 닉네임", example = "hello")
+    private final String nickname;
 
     @Schema(description = "등록 시간")
     private final LocalDateTime createdDateTime;
 
     @Builder
-    private TodoResponse(Long id, String content, TodoStatus status, String username, LocalDateTime createdDateTime) {
+    private TodoResponse(Long id, String content, TodoStatus status, String nickname, LocalDateTime createdDateTime) {
         this.id = id;
         this.content = content;
         this.status = status;
-        this.username = username;
+        this.nickname = nickname;
         this.createdDateTime = createdDateTime;
     }
 
@@ -41,7 +41,7 @@ public class TodoResponse {
                 .id(todo.getId())
                 .content(todo.getContent())
                 .status(todo.getStatus())
-                .username(todo.getAccount().getUsername())
+                .nickname(todo.getAccount().getNickname())
                 .createdDateTime(todo.getCreatedDateTime())
                 .build();
     }
