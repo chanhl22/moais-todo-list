@@ -80,7 +80,7 @@ class TodoControllerTest {
 
     @DisplayName("TODO를 등록할 때 내용은 필수값이다.")
     @Test
-    void createAccountWithoutContent() throws Exception {
+    void createTodoWithoutContent() throws Exception {
         //given
         TodoAddRequest request = TodoAddRequest.builder()
                 .status(TODO)
@@ -100,7 +100,7 @@ class TodoControllerTest {
 
     @DisplayName("TODO를 등록할 때 상태는 필수값이다.")
     @Test
-    void createAccountWithoutStatus() throws Exception {
+    void createTodoWithoutStatus() throws Exception {
         //given
         TodoAddRequest request = TodoAddRequest.builder()
                 .content("컨텐츠")
@@ -228,7 +228,7 @@ class TodoControllerTest {
 
     @DisplayName("TODO를 수정할 때 내용은 필수값이다.")
     @Test
-    void updateAccountWithoutContent() throws Exception {
+    void updateTodoWithoutContent() throws Exception {
         //given
         TodoUpdateRequest request = TodoUpdateRequest.builder()
                 .id(1L)
@@ -249,7 +249,7 @@ class TodoControllerTest {
 
     @DisplayName("TODO를 수정할 때 상태는 필수값이다.")
     @Test
-    void updateAccountWithoutStatus() throws Exception {
+    void updateTodoWithoutStatus() throws Exception {
         //given
         TodoUpdateRequest request = TodoUpdateRequest.builder()
                 .id(1L)

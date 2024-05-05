@@ -75,6 +75,44 @@ class AccountControllerTest {
                 .andExpect(jsonPath("$.message").value("OK"));
     }
 
+    @DisplayName("회원가입을 할 때 회원 이름은 필수입니다.")
+    @Test
+    void updateAccountWithoutUsername() throws Exception {
+        //given
+        AccountRequest request = AccountRequest.builder()
+                .password("123")
+                .build();
+
+        //when //then
+        mockMvc.perform(post("/account/signup")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("username은 필수입니다."));
+    }
+
+    @DisplayName("회원가입을 할 때 비밀번호는 필수입니다.")
+    @Test
+    void updateAccountWithoutPassword() throws Exception {
+        //given
+        AccountRequest request = AccountRequest.builder()
+                .username("hello")
+                .build();
+
+        //when //then
+        mockMvc.perform(post("/account/signup")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("password는 필수입니다."));
+    }
+
     @DisplayName("기존 회원이 탈퇴한다.")
     @Test
     void deleteAccount() throws Exception {

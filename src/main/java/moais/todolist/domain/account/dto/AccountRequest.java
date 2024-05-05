@@ -14,7 +14,7 @@ public class AccountRequest {
 
     private static final String ROLE = "USER";
 
-    @Schema(description = "회원 닉네임", example = "hello")
+    @Schema(description = "회원 이름", example = "hello")
     @NotBlank(message = "username은 필수입니다.")
     private final String username;
 
