@@ -2,6 +2,9 @@ package moais.todolist.domain.account;
 
 import moais.todolist.domain.account.dto.AccountRequest;
 import moais.todolist.domain.exception.TodoException;
+import moais.todolist.domain.todo.Todo;
+import moais.todolist.domain.todo.TodoRepository;
+import moais.todolist.domain.todo.TodoStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,8 +23,12 @@ class AccountServiceTest {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private TodoRepository todoRepository;
+
     @AfterEach
     void tearDown() {
+        todoRepository.deleteAllInBatch();
         accountRepository.deleteAllInBatch();
     }
 
@@ -75,11 +82,26 @@ class AccountServiceTest {
                 .build();
         Account savedAccount = accountRepository.save(account);
 
+        createTodo("hello1", account);
+        createTodo("hello2", account);
+        createTodo("hello3", account);
+        createTodo("hello4", account);
+
         //when
         accountService.delete(savedAccount);
 
         //then
         assertThat(accountRepository.findById(savedAccount.getId())).isEmpty();
+        assertThat(todoRepository.findByAccount(account)).isEmpty();
+    }
+
+    private Todo createTodo(String hello1, Account account) {
+        Todo todo = Todo.builder()
+                .content(hello1)
+                .status(TodoStatus.TODO)
+                .account(account)
+                .build();
+        return todoRepository.save(todo);
     }
 
 }
