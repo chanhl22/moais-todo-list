@@ -42,7 +42,7 @@
 ### 엔티티 클래스
 
 ![img_1.png](readme/img_1.png)  
-한 Accont가 여러개의 TODO를 쓸 수 있도록 설계했습니다.
+한 Accont가 여러개의 Todo를 쓸 수 있도록 설계했습니다.
 
 ### ERD
 
