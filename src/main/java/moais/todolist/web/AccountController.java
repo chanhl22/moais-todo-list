@@ -30,7 +30,8 @@ public class AccountController {
         return ApiCommonResponse.ok(accountService.createNew(addRequest));
     }
 
-    @Operation(summary = "회원탈퇴", description = "회원에서 탈퇴합니다.")
+    @Operation(summary = "회원탈퇴", description = "회원에서 탈퇴합니다.<br>" +
+            "기존에 작성한 모든 정보와 회원 정보가 삭제됩니다.")
     @ApiResponse(responseCode = "200", description = "성공", useReturnTypeSchema = true)
     @DeleteMapping("/account/delete")
     @ResponseBody

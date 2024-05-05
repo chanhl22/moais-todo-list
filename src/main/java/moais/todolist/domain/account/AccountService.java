@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moais.todolist.domain.account.dto.AccountRequest;
 import moais.todolist.domain.exception.TodoException;
+import moais.todolist.domain.todo.TodoRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
+    private final TodoRepository todoRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -44,6 +46,7 @@ public class AccountService implements UserDetailsService {
 
     @Transactional
     public void delete(Account account) {
+        todoRepository.deleteByAccount(account);
         accountRepository.deleteById(account.getId());
     }
 }
