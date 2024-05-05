@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import moais.todolist.domain.ApiCommonResponse;
 import moais.todolist.domain.exception.StatusPolicyException;
 import moais.todolist.domain.exception.TodoException;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,6 +31,18 @@ public class TodoExceptionHandler {
     public ApiCommonResponse<Object> errorResponse(StatusPolicyException exception) {
         log.info(exception.getMessage());
         return ApiCommonResponse.of(BAD_REQUEST, exception.getMessage(), null);
+    }
+
+    @ApiResponse(
+            responseCode = "400", description = "잘못된 요청입니다.",
+            content = {@Content(schemaProperties = {
+                    @SchemaProperty(name = "code", schema = @Schema(type = "integer", example = "400")),
+                    @SchemaProperty(name = "message", schema = @Schema(type = "string", example = "잘못된 요청입니다."))})})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BindException.class)
+    public ApiCommonResponse<Object> errorResponse(BindException exception) {
+        log.info(exception.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        return ApiCommonResponse.of(BAD_REQUEST, exception.getBindingResult().getAllErrors().get(0).getDefaultMessage(), null);
     }
 
     @ApiResponse(

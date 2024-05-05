@@ -6,6 +6,8 @@ import lombok.Getter;
 import moais.todolist.domain.account.Account;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.validation.constraints.NotBlank;
+
 @Schema(description = "회원 등록 요청 정보")
 @Getter
 public class AccountRequest {
@@ -13,9 +15,11 @@ public class AccountRequest {
     private static final String ROLE = "USER";
 
     @Schema(description = "회원 닉네임", example = "hello")
+    @NotBlank(message = "username은 필수입니다.")
     private final String username;
 
     @Schema(description = "비밀번호", example = "123")
+    @NotBlank(message = "password는 필수입니다.")
     private final String password;
 
     @Builder

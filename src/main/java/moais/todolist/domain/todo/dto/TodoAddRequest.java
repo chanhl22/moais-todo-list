@@ -8,12 +8,15 @@ import moais.todolist.domain.account.Account;
 import moais.todolist.domain.todo.Todo;
 import moais.todolist.domain.todo.TodoStatus;
 
+import javax.validation.constraints.NotBlank;
+
 @Schema(description = "TODO 등록 요청 정보")
 @Getter
 @NoArgsConstructor
 public class TodoAddRequest {
 
     @Schema(description = "TODO 내용", example = "리스트 개발")
+    @NotBlank(message = "content는 필수입니다.")
     private String content;
 
     @Schema(description = "TODO 상태")

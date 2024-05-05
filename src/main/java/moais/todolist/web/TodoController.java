@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Tag(name = "TODO", description = "TODO 리스트 API")
@@ -37,7 +38,7 @@ public class TodoController {
     @ApiResponse(responseCode = "200", description = "성공", useReturnTypeSchema = true)
     @PostMapping("/todo/save")
     public ApiCommonResponse<Long> saveTodo(
-            @AuthenticationPrincipal LoginAccount loginAccount, @RequestBody TodoAddRequest addRequest) {
+            @AuthenticationPrincipal LoginAccount loginAccount, @Valid @RequestBody TodoAddRequest addRequest) {
         log.info("TODO 생성, 회원 ID = {}", loginAccount.getAccount().getId());
         log.debug("TODO 생성: content = {}, status = {}", addRequest.getContent(), addRequest.getStatus());
         return ApiCommonResponse.ok(todoService.save(loginAccount.getAccount(), addRequest));
@@ -76,7 +77,7 @@ public class TodoController {
     @PostMapping("/todo/update")
     @ResponseBody
     public ApiCommonResponse<Long> update(
-            @AuthenticationPrincipal LoginAccount loginAccount, @RequestBody TodoUpdateRequest updateRequest) {
+            @AuthenticationPrincipal LoginAccount loginAccount, @Valid @RequestBody TodoUpdateRequest updateRequest) {
         log.info("TODO 수정, 회원 ID = {}", loginAccount.getAccount().getId());
         log.debug("TODO 수정: content = {}, status = {}", updateRequest.getContent(), updateRequest.getStatus());
         return ApiCommonResponse.ok(todoService.update(loginAccount.getAccount(), updateRequest));

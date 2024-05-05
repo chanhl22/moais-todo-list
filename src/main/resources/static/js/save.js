@@ -24,7 +24,7 @@ new Vue({
                     window.location.href = '/list';
                 })
                 .catch(function (error) {
-                    alert("오류 발생");
+                    alert(error.response.data.message);
                 });
         },
     }

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
+
 @Tag(name = "회원", description = "회원 API")
 @Slf4j
 @RequiredArgsConstructor
@@ -28,7 +30,7 @@ public class AccountController {
     @ApiResponse(responseCode = "200", description = "성공", useReturnTypeSchema = true)
     @PostMapping("/account/signup")
     @ResponseBody
-    public ApiCommonResponse<Long> createAccount(@RequestBody AccountRequest addRequest) {
+    public ApiCommonResponse<Long> createAccount(@Valid @RequestBody AccountRequest addRequest) {
         log.info("회원가입, 회원 username = {}", addRequest.getUsername());
         return ApiCommonResponse.ok(accountService.createNew(addRequest));
     }
