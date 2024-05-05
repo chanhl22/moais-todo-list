@@ -14,11 +14,11 @@
     <div>
         <table border='1'>
             <colgroup>
-                <col width="240px">
-                <col width="120px">
-                <col width="120px">
-                <col width="120px">
-                <col width="*">
+                <col width="100px">
+                <col width="200px">
+                <col width="200px">
+                <col width="200px">
+                <col width="200px">
             </colgroup>
             <thead>
             <tr>
@@ -33,7 +33,7 @@
             <!--데이터가 없을 경우-->
             <tbody v-if="todolist.length === 0">
             <tr>
-                <td colspan="4">데이터 없음</td>
+                <td colspan="5">데이터 없음</td>
             </tr>
             </tbody>
 
@@ -43,7 +43,7 @@
                 <td @click="update(list.id, list.content, list.status)">{{ list.id }}</td>
                 <td>{{ list.content }}</td>
                 <td>{{ list.status }}</td>
-                <td>{{ list.username }}</td>
+                <td>{{ list.nickname }}</td>
                 <td>{{ list.createdDateTime }}</td>
             </tr>
             </tbody>

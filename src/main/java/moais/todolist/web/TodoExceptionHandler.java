@@ -8,29 +8,27 @@ import lombok.extern.slf4j.Slf4j;
 import moais.todolist.domain.ApiCommonResponse;
 import moais.todolist.domain.exception.StatusPolicyException;
 import moais.todolist.domain.exception.TodoException;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @RestControllerAdvice
 public class TodoExceptionHandler {
 
     @ApiResponse(
-            responseCode = "200", description = "변경 조건에 적합하지 않아서 변경이 불가능합니다.",
+            responseCode = "400", description = "잘못된 요청입니다.",
             content = {@Content(schemaProperties = {
-                    @SchemaProperty(name = "code", schema = @Schema(type = "integer", example = "200")),
-                    @SchemaProperty(name = "message", schema = @Schema(type = "string", example = "변경 조건에 적합하지 않아서 변경이 불가능합니다."))})})
-    @ResponseStatus(HttpStatus.OK)
+                    @SchemaProperty(name = "code", schema = @Schema(type = "integer", example = "400")),
+                    @SchemaProperty(name = "message", schema = @Schema(type = "string", example = "잘못된 요청입니다."))})})
+    @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(StatusPolicyException.class)
-    public ApiCommonResponse<Object> errorResponse(BindException exception) {
+    public ApiCommonResponse<Object> errorResponse(StatusPolicyException exception) {
         log.info(exception.getMessage());
-        return ApiCommonResponse.of(OK, exception.getMessage(), null);
+        return ApiCommonResponse.of(BAD_REQUEST, exception.getMessage(), null);
     }
 
     @ApiResponse(
@@ -41,7 +39,7 @@ public class TodoExceptionHandler {
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ExceptionHandler(TodoException.class)
     public ApiCommonResponse<Object> errorResponse(TodoException exception) {
-        log.info("ERROR: {}", exception.getMessage());
+        log.info(exception.getMessage());
         return ApiCommonResponse.of(INTERNAL_SERVER_ERROR, exception.getMessage(), null);
     }
 

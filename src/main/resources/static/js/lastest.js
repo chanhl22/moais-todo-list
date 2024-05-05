@@ -4,7 +4,7 @@ new Vue({
         id: '',
         content: '',
         status: '',
-        username: '',
+        nickname: '',
         createdDateTime: '',
     },
     mounted: function () {
@@ -19,7 +19,7 @@ new Vue({
                     $this.id = response.data.data.id;
                     $this.content = response.data.data.content;
                     $this.status = response.data.data.status;
-                    $this.username = response.data.data.username;
+                    $this.nickname = response.data.data.nickname;
                     $this.createdDateTime = response.data.data.createdDateTime;
                 })
                 .catch(function (error) {
