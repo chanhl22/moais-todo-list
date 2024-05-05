@@ -151,6 +151,7 @@ class TodoControllerTest {
     void updateTodo() throws Exception {
         //given
         TodoUpdateRequest request = TodoUpdateRequest.builder()
+                .id(1L)
                 .content("todo")
                 .status(TODO)
                 .build();

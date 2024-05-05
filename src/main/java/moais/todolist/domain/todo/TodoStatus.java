@@ -1,7 +1,10 @@
 package moais.todolist.domain.todo;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.stream.Stream;
 
 @Getter
 @RequiredArgsConstructor
@@ -13,5 +16,13 @@ public enum TodoStatus {
     PENDING("대기");
 
     private final String description;
+
+    @JsonCreator
+    public static TodoStatus parsing(String inputValue) {
+        return Stream.of(TodoStatus.values())
+                .filter(category -> category.toString().equals(inputValue.toUpperCase()))
+                .findFirst()
+                .orElse(null);
+    }
 
 }

@@ -9,6 +9,7 @@ import moais.todolist.domain.todo.Todo;
 import moais.todolist.domain.todo.TodoStatus;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Schema(description = "TODO 등록 요청 정보")
 @Getter
@@ -20,6 +21,7 @@ public class TodoAddRequest {
     private String content;
 
     @Schema(description = "TODO 상태")
+    @NotNull(message = "유효하지 않은 status입니다.")
     private TodoStatus status;
 
     @Builder

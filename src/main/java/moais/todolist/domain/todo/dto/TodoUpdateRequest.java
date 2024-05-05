@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import moais.todolist.domain.todo.TodoStatus;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Schema(description = "TODO 수정 요청 정보")
 @Getter
@@ -14,7 +16,7 @@ import javax.validation.constraints.NotBlank;
 public class TodoUpdateRequest {
 
     @Schema(description = "TODO id", example = "3")
-    @NotBlank(message = "id는 필수입니다.")
+    @Positive(message = "id는 필수입니다.")
     private Long id;
 
     @Schema(description = "TODO 내용", example = "리스트 개발")
@@ -22,6 +24,7 @@ public class TodoUpdateRequest {
     private String content;
 
     @Schema(description = "TODO 상태")
+    @NotNull(message = "유효하지 않은 status입니다.")
     private TodoStatus status;
 
     @Builder
