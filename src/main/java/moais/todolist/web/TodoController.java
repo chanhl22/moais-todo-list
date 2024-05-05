@@ -14,6 +14,7 @@ import moais.todolist.domain.todo.TodoService;
 import moais.todolist.domain.todo.dto.TodoAddRequest;
 import moais.todolist.domain.todo.dto.TodoResponse;
 import moais.todolist.domain.todo.dto.TodoUpdateRequest;
+import moais.todolist.domain.todo.dto.TodosResponse;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,7 +51,7 @@ public class TodoController {
     })
     @GetMapping("/todo/list")
     @ResponseBody
-    public ApiCommonResponse<List<TodoResponse>> findTodoList(
+    public ApiCommonResponse<TodosResponse> findTodoList(
             @AuthenticationPrincipal LoginAccount loginAccount,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size) {

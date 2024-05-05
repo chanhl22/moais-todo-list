@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moais.todolist.domain.account.Account;
 import moais.todolist.domain.paging.PagingRequest;
+import moais.todolist.domain.paging.PagingResponse;
 import moais.todolist.domain.policy.StatusPolicy;
 import moais.todolist.domain.todo.dto.TodoAddRequest;
 import moais.todolist.domain.todo.dto.TodoResponse;
 import moais.todolist.domain.todo.dto.TodoUpdateRequest;
+import moais.todolist.domain.todo.dto.TodosResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,10 +31,16 @@ public class TodoService {
         return todoRepository.save(addRequest.toEntity(account)).getId();
     }
 
-    public List<TodoResponse> findTodoByAccount(Account account, PagingRequest pagingRequest) {
-        return todoRepository.findByAccount(account, pagingRequest.makePageable()).stream()
+    public TodosResponse findTodoByAccount(Account account, PagingRequest pagingRequest) {
+        Page<Todo> findTodos = todoRepository.findByAccount(account, pagingRequest.makePageable());
+
+        PagingResponse paging = PagingResponse.of(
+                findTodos.getTotalElements(), findTodos.getNumber(), findTodos.getTotalPages(), findTodos.hasNext());
+        List<TodoResponse> todos = findTodos.stream()
                 .map(TodoResponse::of)
                 .collect(Collectors.toList());
+
+        return TodosResponse.of(paging, todos);
     }
 
     public TodoResponse findTop1ByAccount(Account account) {

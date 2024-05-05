@@ -6,6 +6,7 @@ import moais.todolist.domain.paging.PagingRequest;
 import moais.todolist.domain.todo.dto.TodoAddRequest;
 import moais.todolist.domain.todo.dto.TodoResponse;
 import moais.todolist.domain.todo.dto.TodoUpdateRequest;
+import moais.todolist.domain.todo.dto.TodosResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -83,10 +84,10 @@ class TodoServiceTest {
                 .build();
 
         //when
-        List<TodoResponse> result = todoService.findTodoByAccount(account, request);
+        TodosResponse result = todoService.findTodoByAccount(account, request);
 
         //then
-        assertThat(result).hasSize(3)
+        assertThat(result.getTodos()).hasSize(3)
                 .extracting("content", "nickname")
                 .containsExactly(
                         tuple("hello4", "hello"),
