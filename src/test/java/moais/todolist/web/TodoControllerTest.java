@@ -78,6 +78,46 @@ class TodoControllerTest {
                 .andExpect(jsonPath("$.message").value("OK"));
     }
 
+    @DisplayName("TODO를 등록할 때 내용은 필수값이다.")
+    @Test
+    void createAccountWithoutContent() throws Exception {
+        //given
+        TodoAddRequest request = TodoAddRequest.builder()
+                .status(TODO)
+                .build();
+
+        //when //then
+        mockMvc.perform(post("/todo/save")
+                        .with(user(loginAccount))
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("content는 필수입니다."));
+    }
+
+    @DisplayName("TODO를 등록할 때 상태는 필수값이다.")
+    @Test
+    void createAccountWithoutStatus() throws Exception {
+        //given
+        TodoAddRequest request = TodoAddRequest.builder()
+                .content("컨텐츠")
+                .build();
+
+        //when //then
+        mockMvc.perform(post("/todo/save")
+                        .with(user(loginAccount))
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("유효하지 않은 status입니다."));
+    }
+
     @DisplayName("회원이 아니면 등록할 수 없다.")
     @Test
     void NotAccountNoCreate() throws Exception {
@@ -184,6 +224,48 @@ class TodoControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
+    }
+
+    @DisplayName("TODO를 수정할 때 내용은 필수값이다.")
+    @Test
+    void updateAccountWithoutContent() throws Exception {
+        //given
+        TodoUpdateRequest request = TodoUpdateRequest.builder()
+                .id(1L)
+                .status(TODO)
+                .build();
+
+        //when //then
+        mockMvc.perform(post("/todo/update")
+                        .with(user(loginAccount))
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("content는 필수입니다."));
+    }
+
+    @DisplayName("TODO를 수정할 때 상태는 필수값이다.")
+    @Test
+    void updateAccountWithoutStatus() throws Exception {
+        //given
+        TodoUpdateRequest request = TodoUpdateRequest.builder()
+                .id(1L)
+                .content("todo")
+                .build();
+
+        //when //then
+        mockMvc.perform(post("/todo/update")
+                        .with(user(loginAccount))
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("유효하지 않은 status입니다."));
     }
 
 }
