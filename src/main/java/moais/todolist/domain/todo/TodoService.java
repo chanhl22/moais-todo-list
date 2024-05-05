@@ -3,6 +3,7 @@ package moais.todolist.domain.todo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moais.todolist.domain.account.Account;
+import moais.todolist.domain.exception.StatusPolicyException;
 import moais.todolist.domain.paging.PagingRequest;
 import moais.todolist.domain.paging.PagingResponse;
 import moais.todolist.domain.policy.StatusPolicy;
@@ -60,9 +61,14 @@ public class TodoService {
     }
 
     private void updateTodo(TodoUpdateRequest updateRequest, Todo todo) {
-        if (statusPolicy.canStatusModify(todo.getStatus(), updateRequest.getStatus())) {
-            todo.update(updateRequest.getContent(), updateRequest.getStatus());
+        if (!checkStatus(updateRequest, todo)) {
+            throw new StatusPolicyException("변경 조건에 적합하지 않아서 변경이 불가능합니다.");
         }
+        todo.update(updateRequest.getContent(), updateRequest.getStatus());
+    }
+
+    private boolean checkStatus(TodoUpdateRequest updateRequest, Todo todo) {
+        return statusPolicy.canStatusModify(todo.getStatus(), updateRequest.getStatus());
     }
 
 }

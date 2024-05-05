@@ -2,6 +2,7 @@ package moais.todolist.domain.todo;
 
 import moais.todolist.domain.account.Account;
 import moais.todolist.domain.account.AccountRepository;
+import moais.todolist.domain.exception.TodoException;
 import moais.todolist.domain.paging.PagingRequest;
 import moais.todolist.domain.todo.dto.TodoAddRequest;
 import moais.todolist.domain.todo.dto.TodoResponse;
@@ -15,8 +16,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+import static moais.todolist.domain.todo.TodoStatus.DONE;
 import static moais.todolist.domain.todo.TodoStatus.IN_PROGRESS;
+import static moais.todolist.domain.todo.TodoStatus.PENDING;
+import static moais.todolist.domain.todo.TodoStatus.TODO;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.groups.Tuple.tuple;
 
 @SpringBootTest
@@ -152,10 +157,70 @@ class TodoServiceTest {
                 .containsExactly("hi", IN_PROGRESS);
     }
 
-    private Todo createTodo(String hello1, Account account) {
+    @DisplayName("할 일 상태에서 대기 상태로 변경하면 예외가 발생한다.")
+    @Test
+    void todoToPending() {
+        //given
+        Account account = Account.builder()
+                .username("hello")
+                .password("123")
+                .role("USER")
+                .build();
+        accountRepository.save(account);
+
+        Todo todo = createTodo("hello1", account, TODO);
+        Long id = todoRepository.save(todo).getId();
+
+        TodoUpdateRequest request = TodoUpdateRequest.builder()
+                .id(id)
+                .content("hi")
+                .status(PENDING)
+                .build();
+
+        //when //then
+        assertThatThrownBy(() -> todoService.update(account, request))
+                .isInstanceOf(TodoException.class)
+                .hasMessage("변경 조건에 적합하지 않아서 변경이 불가능합니다.");
+    }
+
+    @DisplayName("완료 상태에서 대기 상태로 변경하면 예외가 발생한다.")
+    @Test
+    void doneToPending() {
+        //given
+        Account account = Account.builder()
+                .username("hello")
+                .password("123")
+                .role("USER")
+                .build();
+        accountRepository.save(account);
+
+        Todo todo = createTodo("hello1", account, DONE);
+        Long id = todoRepository.save(todo).getId();
+
+        TodoUpdateRequest request = TodoUpdateRequest.builder()
+                .id(id)
+                .content("hi")
+                .status(PENDING)
+                .build();
+
+        //when //then
+        assertThatThrownBy(() -> todoService.update(account, request))
+                .isInstanceOf(TodoException.class)
+                .hasMessage("변경 조건에 적합하지 않아서 변경이 불가능합니다.");
+    }
+
+    private Todo createTodo(String hello, Account account) {
         return Todo.builder()
-                .content(hello1)
+                .content(hello)
                 .status(TodoStatus.TODO)
+                .account(account)
+                .build();
+    }
+
+    private Todo createTodo(String hello, Account account, TodoStatus status) {
+        return Todo.builder()
+                .content(hello)
+                .status(status)
                 .account(account)
                 .build();
     }
