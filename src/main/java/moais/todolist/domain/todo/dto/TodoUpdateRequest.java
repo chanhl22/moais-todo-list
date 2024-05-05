@@ -4,8 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import moais.todolist.domain.account.Account;
-import moais.todolist.domain.todo.Todo;
 import moais.todolist.domain.todo.TodoStatus;
 
 @Schema(description = "TODO 수정 요청 정보")
@@ -27,14 +25,6 @@ public class TodoUpdateRequest {
         this.id = id;
         this.content = content;
         this.status = status;
-    }
-
-    public Todo toEntity(Account account) {
-        return Todo.builder()
-                .content(content)
-                .status(status)
-                .account(account)
-                .build();
     }
 
 }
