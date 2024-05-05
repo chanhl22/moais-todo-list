@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import moais.todolist.domain.ApiCommonResponse;
 import moais.todolist.domain.account.LoginAccount;
 import moais.todolist.domain.paging.PagingRequest;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @Tag(name = "TODO", description = "TODO 리스트 API")
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class TodoController {
@@ -35,6 +37,8 @@ public class TodoController {
     @PostMapping("/todo/save")
     public ApiCommonResponse<Long> saveTodo(
             @AuthenticationPrincipal LoginAccount loginAccount, @RequestBody TodoAddRequest addRequest) {
+        log.info("TODO 생성, 회원 ID = {}", loginAccount.getAccount().getId());
+        log.debug("TODO 생성: content = {}, status = {}", addRequest.getContent(), addRequest.getStatus());
         return ApiCommonResponse.ok(todoService.save(loginAccount.getAccount(), addRequest));
     }
 
@@ -50,6 +54,8 @@ public class TodoController {
             @AuthenticationPrincipal LoginAccount loginAccount,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size) {
+        log.info("TODO 리스트 조회, 회원 ID = {}", loginAccount.getAccount().getId());
+        log.debug("TODO 리스트 조회: page = {}, size = {}", page, size);
         return ApiCommonResponse.ok(
                 todoService.findTodoByAccount(loginAccount.getAccount(), PagingRequest.of(page, size)));
     }
@@ -60,6 +66,7 @@ public class TodoController {
     @ResponseBody
     public ApiCommonResponse<TodoResponse> findTodoLatest(
             @AuthenticationPrincipal LoginAccount loginAccount) {
+        log.info("최근 TODO 조회, 회원 ID = {}", loginAccount.getAccount().getId());
         return ApiCommonResponse.ok(todoService.findTop1ByAccount(loginAccount.getAccount()));
     }
 
@@ -69,6 +76,8 @@ public class TodoController {
     @ResponseBody
     public ApiCommonResponse<Long> update(
             @AuthenticationPrincipal LoginAccount loginAccount, @RequestBody TodoUpdateRequest updateRequest) {
+        log.info("TODO 수정, 회원 ID = {}", loginAccount.getAccount().getId());
+        log.debug("TODO 수정: content = {}, status = {}", updateRequest.getContent(), updateRequest.getStatus());
         return ApiCommonResponse.ok(todoService.update(loginAccount.getAccount(), updateRequest));
     }
 

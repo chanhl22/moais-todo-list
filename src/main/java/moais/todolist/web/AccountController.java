@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import moais.todolist.domain.ApiCommonResponse;
 import moais.todolist.domain.account.AccountService;
 import moais.todolist.domain.account.LoginAccount;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Tag(name = "회원", description = "회원 API")
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class AccountController {
@@ -27,6 +29,7 @@ public class AccountController {
     @PostMapping("/account/signup")
     @ResponseBody
     public ApiCommonResponse<Long> createAccount(@RequestBody AccountRequest addRequest) {
+        log.info("회원가입, 회원 username = {}", addRequest.getUsername());
         return ApiCommonResponse.ok(accountService.createNew(addRequest));
     }
 
@@ -36,6 +39,7 @@ public class AccountController {
     @DeleteMapping("/account/delete")
     @ResponseBody
     public ApiCommonResponse<Object> deleteAccount(@AuthenticationPrincipal LoginAccount loginAccount) {
+        log.info("회원탈퇴, 회원 username = {}", loginAccount.getAccount().getUsername());
         accountService.delete(loginAccount.getAccount());
         return ApiCommonResponse.ok();
     }

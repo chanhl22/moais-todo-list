@@ -25,7 +25,7 @@ public class TodoExceptionHandler {
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ExceptionHandler(TodoException.class)
     public ApiCommonResponse<Object> errorResponse(TodoException exception) {
-        log.error("ERROR: {}", exception.getMessage());
+        log.info("ERROR: {}", exception.getMessage());
         return ApiCommonResponse.of(INTERNAL_SERVER_ERROR, exception.getMessage(), null);
     }
 
