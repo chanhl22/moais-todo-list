@@ -8,9 +8,9 @@ import lombok.RequiredArgsConstructor;
 public enum TodoStatus {
 
     TODO("할 일"),
-    PROGRESS("진행중"),
-    COMPLETED("완료"),
-    HOLD("대기");
+    IN_PROGRESS("진행중"),
+    DONE("완료"),
+    PENDING("대기");
 
     private final String description;
 

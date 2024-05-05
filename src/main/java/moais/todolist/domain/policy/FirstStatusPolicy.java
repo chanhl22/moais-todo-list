@@ -4,8 +4,8 @@ import moais.todolist.domain.todo.TodoStatus;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import static moais.todolist.domain.todo.TodoStatus.HOLD;
-import static moais.todolist.domain.todo.TodoStatus.PROGRESS;
+import static moais.todolist.domain.todo.TodoStatus.PENDING;
+import static moais.todolist.domain.todo.TodoStatus.IN_PROGRESS;
 
 @Component
 @Primary
@@ -17,8 +17,8 @@ public class FirstStatusPolicy implements StatusPolicy {
             return true;
         }
 
-        if (HOLD.equals(tobe)) {
-            return PROGRESS.equals(asis);
+        if (PENDING.equals(tobe)) {
+            return IN_PROGRESS.equals(asis);
         }
 
         return true;

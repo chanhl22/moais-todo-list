@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static moais.todolist.domain.todo.TodoStatus.COMPLETED;
-import static moais.todolist.domain.todo.TodoStatus.HOLD;
-import static moais.todolist.domain.todo.TodoStatus.PROGRESS;
+import static moais.todolist.domain.todo.TodoStatus.DONE;
+import static moais.todolist.domain.todo.TodoStatus.PENDING;
+import static moais.todolist.domain.todo.TodoStatus.IN_PROGRESS;
 import static moais.todolist.domain.todo.TodoStatus.TODO;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,10 +21,10 @@ class FirstStatusPolicyTest {
     @Test
     void progressAndHoldCanModifyToHole() {
         //given //when
-        boolean result1 = firstStatusPolicy.canStatusModify(TODO, HOLD);
-        boolean result2 = firstStatusPolicy.canStatusModify(PROGRESS, HOLD);
-        boolean result3 = firstStatusPolicy.canStatusModify(COMPLETED, HOLD);
-        boolean result4 = firstStatusPolicy.canStatusModify(HOLD, HOLD);
+        boolean result1 = firstStatusPolicy.canStatusModify(TODO, PENDING);
+        boolean result2 = firstStatusPolicy.canStatusModify(IN_PROGRESS, PENDING);
+        boolean result3 = firstStatusPolicy.canStatusModify(DONE, PENDING);
+        boolean result4 = firstStatusPolicy.canStatusModify(PENDING, PENDING);
 
         //then
         assertThat(result1).isFalse();
@@ -37,10 +37,10 @@ class FirstStatusPolicyTest {
     @Test
     void ifStatusProgress() {
         //given //when
-        boolean result1 = firstStatusPolicy.canStatusModify(PROGRESS, TODO);
-        boolean result2 = firstStatusPolicy.canStatusModify(PROGRESS, PROGRESS);
-        boolean result3 = firstStatusPolicy.canStatusModify(PROGRESS, COMPLETED);
-        boolean result4 = firstStatusPolicy.canStatusModify(PROGRESS, HOLD);
+        boolean result1 = firstStatusPolicy.canStatusModify(IN_PROGRESS, TODO);
+        boolean result2 = firstStatusPolicy.canStatusModify(IN_PROGRESS, IN_PROGRESS);
+        boolean result3 = firstStatusPolicy.canStatusModify(IN_PROGRESS, DONE);
+        boolean result4 = firstStatusPolicy.canStatusModify(IN_PROGRESS, PENDING);
 
         //then
         assertThat(result1).isTrue();
@@ -54,9 +54,9 @@ class FirstStatusPolicyTest {
     void ifStatusTodo() {
         //given //when
         boolean result1 = firstStatusPolicy.canStatusModify(TODO, TODO);
-        boolean result2 = firstStatusPolicy.canStatusModify(TODO, PROGRESS);
-        boolean result3 = firstStatusPolicy.canStatusModify(TODO, COMPLETED);
-        boolean result4 = firstStatusPolicy.canStatusModify(TODO, HOLD);
+        boolean result2 = firstStatusPolicy.canStatusModify(TODO, IN_PROGRESS);
+        boolean result3 = firstStatusPolicy.canStatusModify(TODO, DONE);
+        boolean result4 = firstStatusPolicy.canStatusModify(TODO, PENDING);
 
         //then
         assertThat(result1).isTrue();
@@ -69,10 +69,10 @@ class FirstStatusPolicyTest {
     @Test
     void ifStatusCompleted() {
         //given //when
-        boolean result1 = firstStatusPolicy.canStatusModify(COMPLETED, TODO);
-        boolean result2 = firstStatusPolicy.canStatusModify(COMPLETED, PROGRESS);
-        boolean result3 = firstStatusPolicy.canStatusModify(COMPLETED, COMPLETED);
-        boolean result4 = firstStatusPolicy.canStatusModify(COMPLETED, HOLD);
+        boolean result1 = firstStatusPolicy.canStatusModify(DONE, TODO);
+        boolean result2 = firstStatusPolicy.canStatusModify(DONE, IN_PROGRESS);
+        boolean result3 = firstStatusPolicy.canStatusModify(DONE, DONE);
+        boolean result4 = firstStatusPolicy.canStatusModify(DONE, PENDING);
 
         //then
         assertThat(result1).isTrue();
@@ -85,10 +85,10 @@ class FirstStatusPolicyTest {
     @Test
     void ifStatusHold() {
         //given //when
-        boolean result1 = firstStatusPolicy.canStatusModify(HOLD, TODO);
-        boolean result2 = firstStatusPolicy.canStatusModify(HOLD, PROGRESS);
-        boolean result3 = firstStatusPolicy.canStatusModify(HOLD, COMPLETED);
-        boolean result4 = firstStatusPolicy.canStatusModify(HOLD, HOLD);
+        boolean result1 = firstStatusPolicy.canStatusModify(PENDING, TODO);
+        boolean result2 = firstStatusPolicy.canStatusModify(PENDING, IN_PROGRESS);
+        boolean result3 = firstStatusPolicy.canStatusModify(PENDING, DONE);
+        boolean result4 = firstStatusPolicy.canStatusModify(PENDING, PENDING);
 
         //then
         assertThat(result1).isTrue();

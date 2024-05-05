@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static moais.todolist.domain.todo.TodoStatus.PROGRESS;
+import static moais.todolist.domain.todo.TodoStatus.IN_PROGRESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
 
@@ -137,7 +137,7 @@ class TodoServiceTest {
         TodoUpdateRequest request = TodoUpdateRequest.builder()
                 .id(id)
                 .content("hi")
-                .status(PROGRESS)
+                .status(IN_PROGRESS)
                 .build();
 
         //when
@@ -146,7 +146,7 @@ class TodoServiceTest {
         //then
         assertThat(todoRepository.findById(result).get())
                 .extracting("content", "status")
-                .containsExactly("hi", PROGRESS);
+                .containsExactly("hi", IN_PROGRESS);
     }
 
     private Todo createTodo(String hello1, Account account) {
